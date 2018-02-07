@@ -11,8 +11,10 @@ import pl.amazingshit.has.hns;
 public class Game {
 	private static Set<Player> players = new HashSet<Player>();
 	private static Integer count = 5;
+	private static Long left = OptionsGet.gameTime();
 	public static boolean countdown = false;
 	private static int task;
+	public static int gameTask;
 
 	public static void start() {
 		// Countdown
@@ -31,6 +33,50 @@ public class Game {
 				}
 			}
 		}, 0L, 20L);
+
+		gameTask = hns.server.getScheduler().scheduleAsyncRepeatingTask(hns.instance, new Runnable() {
+			public void run() {
+				if (left == 1200L) {
+					broadcast("One minute left!");
+				}
+				if (left < 201) {
+					if (left == 200L) {
+						broadcast("10");
+					}
+					if (left == 180L) {
+						broadcast("9");
+					}
+					if (left == 160L) {
+						broadcast("8");
+					}
+					if (left == 140L) {
+						broadcast("7");
+					}
+					if (left == 120L) {
+						broadcast("6");
+					}
+					if (left == 100L) {
+						broadcast("5");
+					}
+					if (left == 80L) {
+						broadcast("4");
+					}
+					if (left == 60L) {
+						broadcast("3");
+					}
+					if (left == 40L) {
+						broadcast("2");
+					}
+					if (left == 20L) {
+						broadcast("1");
+					}
+					if (left == 0L) {
+						broadcast("Game finished!");
+						hns.server.getScheduler().cancelTask(gameTask);
+					}
+				}
+			}
+		}, 0L, OptionsGet.gameTime());
 	}
 
 	public static Set<Player> getPlayers() {
@@ -52,7 +98,7 @@ public class Game {
 	// Object might be: String, Double, Integer, Float, etc.
 	public static void broadcast(Object message) {
 		for (Player playing: players) {
-			playing.sendMessage(ChatColor.BLUE + " [" + ChatColor.RED + "Hide And Seek" + ChatColor.BLUE + "]" + 
+			playing.sendMessage(ChatColor.BLUE + " [" + ChatColor.RED + "Hide And Seek" + ChatColor.BLUE + "] " + 
 		ChatColor.WHITE + message);
 		}
 	}
