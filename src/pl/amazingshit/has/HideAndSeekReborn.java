@@ -5,7 +5,10 @@ import java.util.logging.Logger;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event.*;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import pl.amazingshit.has.listeners.*;
 
 public class HideAndSeekReborn extends JavaPlugin {
 
@@ -29,6 +32,10 @@ public class HideAndSeekReborn extends JavaPlugin {
 
 	public void onDisable() {
 		log.info(" [ Hide And Seek (Reborn) ]  Disabled.");
+	}
+
+	public void registerEvents() {
+		server.getPluginManager().registerEvent(Type.PLAYER_MOVE, new Players(), Priority.Normal, this);
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
