@@ -4,6 +4,8 @@ import org.bukkit.util.config.Configuration;
 
 public class hns extends HideAndSeekReborn {
 
+	public static HideAndSeekReborn instance;
+
 	public static void setConfig(Configuration confige) {
 		config = confige;
 	}

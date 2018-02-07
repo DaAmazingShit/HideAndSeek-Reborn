@@ -2,15 +2,19 @@ package pl.amazingshit.has;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HideAndSeekReborn extends JavaPlugin {
 
+	public static Server server;
 	public static Logger log;
 
 	public void onEnable() {
+		hns.instance = this;
+		server = this.getServer();
 		log = this.getServer().getLogger();
 		this.getConfiguration().load();
 		hns.setConfig(this.getConfiguration());
