@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.amazingshit.has.game.Game;
 import pl.amazingshit.has.game.OptionsGet;
+import pl.amazingshit.has.game.OptionsSet;
 
 public class Players extends PlayerListener {
 
@@ -26,6 +27,7 @@ public class Players extends PlayerListener {
 	@Override public void onPlayerJoin(PlayerJoinEvent e) {
 		if (OptionsGet.playerLoginLocation(e.getPlayer().getName()) != null) {
 			e.getPlayer().teleport(OptionsGet.playerLoginLocation(e.getPlayer().getName()));
+			OptionsSet.playerLoginLocation(e.getPlayer().getName(), null);
 		}
 	}
 }
