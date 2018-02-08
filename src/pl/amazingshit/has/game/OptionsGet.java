@@ -65,4 +65,20 @@ public class OptionsGet {
 		}
 		return start;
 	}
+
+	public static Location playerLoginLocation(String player) {
+		Location login = null;
+		try {
+			String[] stringlocation = config.getString(player, null).split(",");
+			World world = hns.server.getWorld(stringlocation[0]);
+			int x = Integer.parseInt(stringlocation[1]);
+			int y = Integer.parseInt(stringlocation[2]);
+			int z = Integer.parseInt(stringlocation[3]);
+			login = new Location(world, x, y, z);
+		}
+		catch (Exception ex) {
+			return null;
+		}
+		return login;
+	}
 }

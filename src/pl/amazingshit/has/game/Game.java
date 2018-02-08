@@ -139,7 +139,33 @@ public class Game {
 	}
 
 	public static void removePlayer(Player p) {
+		p.teleport(Lobby.locations.get(p));
+		Lobby.locations.remove(p);
 		players.remove(p);
+		broadcast(p.getName() + " has left the Hide and Seek game.");
+		hns.broadcast(p, "You've left the Hide and Seek game.");
+		if (players.size() < OptionsGet.minimumPlayers()) {
+			forceEnd(ForceReason.MIN_PLAYERS);
+		}
+	}
+
+	public static void quit(Player p) {
+		OptionsSet.playerLoginLocation(p.getName(), Lobby.locations.get(p));
+		removePlayer(p);
+	}
+
+	public static void forceEnd(ForceReason fr) {
+		for (Player p: getPlayers()) {
+			p.teleport(Lobby.locations.get(p));
+			Lobby.locations.remove(p);
+			players.remove(p);
+			if (fr == ForceReason.MIN_PLAYERS) {
+				hns.broadcast(p, "Forced game end - there was not enough players to play with.");
+			}
+			if (fr == ForceReason.ADMIN) {
+				hns.broadcast(p, "Forced game end.");
+			}
+		}
 	}
 
 	public static boolean isPlayer(Player p) {
@@ -152,5 +178,12 @@ public class Game {
 			playing.sendMessage(ChatColor.BLUE + " [" + ChatColor.RED + "Hide And Seek" + ChatColor.BLUE + "] " + 
 		ChatColor.WHITE + message);
 		}
+	}
+
+	public enum ForceReason {
+
+		ADMIN,
+
+		MIN_PLAYERS;
 	}
 }
