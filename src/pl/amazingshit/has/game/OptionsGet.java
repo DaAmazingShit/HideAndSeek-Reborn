@@ -1,5 +1,7 @@
 package pl.amazingshit.has.game;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.config.Configuration;
 
 import pl.amazingshit.has.hns;
@@ -28,5 +30,39 @@ public class OptionsGet {
 	public static int rawGameTime() {
 		config.load();
 		return config.getInt("game-time", 5);
+	}
+
+	public static Location lobby() throws Exception {
+		config.load();
+		Location lobby = null;
+		try {
+			String[] stringlocation = config.getString("lobby", null).split(",");
+			World world = hns.server.getWorld(stringlocation[0]);
+			int x = Integer.parseInt(stringlocation[1]);
+			int y = Integer.parseInt(stringlocation[2]);
+			int z = Integer.parseInt(stringlocation[3]);
+			lobby = new Location(world, x, y, z);
+		}
+		catch (Exception ex) {
+			throw new Exception(" [ Hide And Seek (Reborn) ]  LOBBY LOCATION NOT DEFINED");
+		}
+		return lobby;
+	}
+
+	public static Location startLocation() throws Exception {
+		config.load();
+		Location start = null;
+		try {
+			String[] stringlocation = config.getString("start-location", null).split(",");
+			World world = hns.server.getWorld(stringlocation[0]);
+			int x = Integer.parseInt(stringlocation[1]);
+			int y = Integer.parseInt(stringlocation[2]);
+			int z = Integer.parseInt(stringlocation[3]);
+			start = new Location(world, x, y, z);
+		}
+		catch (Exception ex) {
+			throw new Exception(" [ Hide And Seek (Reborn) ]  START LOCATION NOT DEFINED");
+		}
+		return start;
 	}
 }

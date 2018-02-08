@@ -1,9 +1,12 @@
 package pl.amazingshit.has.game;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import pl.amazingshit.has.hns;
@@ -13,18 +16,43 @@ public class Game {
 	private static Integer count = 5;
 	private static Long left = OptionsGet.gameTime();
 	public static boolean countdown = false;
-	private static int task;
-	public static int gameTask;
+	public static boolean game = false;
+	private static int task = 0;
+	public static int gameTask = 0;
 
-	public static void start() {
+	public static Map<Player, Block> asBlock = new HashMap<Player, Block>();
+
+	public static void start(Set<Player> playerss) {
+		players.clear();
+		players.addAll(playerss);
 		// Countdown
 		countdown = true;
+
+		for (Player p: players) {
+			try {
+				p.teleport(OptionsGet.startLocation());
+			} catch (Exception e) {
+				hns.broadcast(p, "Game start location is not defined.");
+				countdown = false;
+			}
+		}
+
+		if (countdown == false) {
+			for (Player s: players) {
+				s.teleport(Lobby.locations.get(s));
+				players.clear();
+				Lobby.locations.clear();
+			}
+			return;
+		}
+
 		task = hns.server.getScheduler().scheduleAsyncRepeatingTask(hns.instance, new Runnable() {
 			public void run() {
 				if (count == 0) {
 					broadcast("GO!");
 					count = 5;
 					countdown = false;
+					game = true;
 					hns.server.getScheduler().cancelTask(task);
 				}
 				else {
@@ -32,7 +60,7 @@ public class Game {
 					broadcast(count);
 				}
 			}
-		}, 0L, 20L);
+		}, 10L, 10L);
 
 		gameTask = hns.server.getScheduler().scheduleAsyncRepeatingTask(hns.instance, new Runnable() {
 			public void run() {
@@ -72,11 +100,34 @@ public class Game {
 					}
 					if (left == 0L) {
 						broadcast("Game finished!");
+						left = OptionsGet.gameTime();
 						hns.server.getScheduler().cancelTask(gameTask);
 					}
 				}
+				else {
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+					left--;
+				}
 			}
-		}, 0L, OptionsGet.gameTime());
+		}, 10L, 10L);
 	}
 
 	public static Set<Player> getPlayers() {
