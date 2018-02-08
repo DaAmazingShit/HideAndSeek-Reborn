@@ -69,7 +69,8 @@ public class OptionsGet {
 	public static Location playerLoginLocation(String player) {
 		Location login = null;
 		try {
-			String[] stringlocation = config.getString(player, null).split(",");
+			OptionsSet.locations.load();
+			String[] stringlocation = OptionsSet.locations.getString(player, null).split(",");
 			World world = hns.server.getWorld(stringlocation[0]);
 			int x = Integer.parseInt(stringlocation[1]);
 			int y = Integer.parseInt(stringlocation[2]);
