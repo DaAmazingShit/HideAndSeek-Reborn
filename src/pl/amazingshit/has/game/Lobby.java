@@ -7,15 +7,18 @@ import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import pl.amazingshit.has.Gamer;
 import pl.amazingshit.has.Hider;
 import pl.amazingshit.has.Seeker;
 import pl.amazingshit.has.hns;
 
 public class Lobby {
 
-	public static Set<Player> lobby = new HashSet<Player>();
+	public static Set<Gamer> lobby = new HashSet<Gamer>();
 	public static Map<Player, Location> locations = new HashMap<Player, Location>();
 	public static Integer waitForOthersTask = 0;
 	private static Integer task = 30; // 30 seconds of waiting for possible more players to join
@@ -30,18 +33,24 @@ public class Lobby {
 		}
 
 		locations.put(p, p.getLocation());
-		lobby.add(p);
+		Gamer g = new Gamer((CraftServer)hns.server, ((CraftPlayer)p).getHandle());
+		lobby.add(g);
 		try {
 			p.teleport(OptionsGet.lobby());
 		} catch (Exception e) {
 			hns.broadcast(p, "Lobby location is not defined.");
-			leave(p);
+			leave(g);
 			return;
 		}
 
-		Random r = new Random();
-		int role = r.nextInt(1);
-		setRole(p, role);
+		if (hiders.size()+1 == OptionsGet.minimumPlayers() && seekers.size() == 0) {
+			setRole(g, 1);
+		}
+		else {
+			Random r = new Random();
+			int role = r.nextInt(1);
+			setRole(g, role);
+		}
 
 		if (lobby.size() == OptionsGet.minimumPlayers()) {
 			// Wait 
@@ -60,7 +69,7 @@ public class Lobby {
 		}
 	}
 
-	public static void leave(Player p) {
+	public static void leave(Gamer p) {
 		if (Game.game && Game.isPlayer(p)) {
 			Game.removePlayer(p);
 			return;
@@ -75,20 +84,24 @@ public class Lobby {
 		hns.broadcast(p, "You've left the Hide and Seek game.");
 	}
 
-	public static Set<Player> lobbyPlayers() {
+	public static Set<Gamer> lobbyPlayers() {
 		return lobby;
 	}
 
-	public static void setRole(Player p, Integer role) {
+	public static void setRole(Gamer p, Integer role) {
 		if (role == 0) {
 			Random r = new Random();
 			BlockRepresenter br = BlockRepresenter.getBlockRepresenter(r.nextInt(15));
 			Hider hider = new Hider(p, br.getMaterial());
 			hiders.add(hider);
+			p.setHider(hider);
+			hns.broadcast(p, "You are a hider!");
 		}
-		if (role == 0) {
+		if (role == 1) {
 			Seeker seeker = new Seeker(p);
 			seekers.add(seeker);
+			p.setSeeker(seeker);
+			hns.broadcast(p, "You are a seeker!");
 		}
 	}
 }

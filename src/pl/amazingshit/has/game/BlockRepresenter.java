@@ -26,6 +26,8 @@ public enum BlockRepresenter {
 
 	JUKEBOX(0),
 
+	LEAVES(10),
+
 	NOTE_BLOCK(11),
 
 	GLASS(12),

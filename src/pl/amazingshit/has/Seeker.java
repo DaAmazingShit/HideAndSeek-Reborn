@@ -1,16 +1,14 @@
 package pl.amazingshit.has;
 
-import org.bukkit.entity.Player;
-
 public class Seeker {
 
-	private Player seeker;
+	private Gamer seeker;
 
-	public Seeker(Player p) {
+	public Seeker(Gamer p) {
 		this.seeker = p;
 	}
 
-	public Player getPlayer() {
+	public Gamer getPlayer() {
 		return this.seeker;
 	}
 }

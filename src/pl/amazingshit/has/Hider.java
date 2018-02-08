@@ -1,14 +1,13 @@
 package pl.amazingshit.has;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 public class Hider {
 
 	private Material block;
-	private Player main;
+	private Gamer main;
 
-	public Hider(Player p, Material b) {
+	public Hider(Gamer p, Material b) {
 		this.block = b;
 		this.main = p;
 	}
@@ -17,7 +16,7 @@ public class Hider {
 		return this.block;
 	}
 
-	public Player getPlayer() {
+	public Gamer getPlayer() {
 		return this.main;
 	}
 }
